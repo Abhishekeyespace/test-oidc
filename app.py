@@ -22,7 +22,7 @@ import os, time
 import string
 import random
 import logging
-import jwt
+from jose import jwt
 from flask import Flask, redirect, request, render_template
 
 app = Flask(__name__)
@@ -65,6 +65,7 @@ def generate_token(length=30, chars=UNICODE_ASCII_CHARACTER_SET):
 
 
 def generate_id_token():
+    #Header.Payload.Signature
     auth_time=None
     exp = 3600
     now = int(time.time())
