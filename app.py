@@ -179,7 +179,7 @@ def token():
         "expires_in": 3600,
         'id_token': id_token
     }
-    return 200, token, default_json_headers
+    return token, 200, default_json_headers
 
 
 @app.route("/")
