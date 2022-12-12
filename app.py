@@ -144,12 +144,15 @@ def authorize():
     authorization_code = generate_token()
 
     params = [('code', authorization_code)]
+    params.append(('state', state))
     # get redirect_uri from client dic
     print(f"params: {params}")
     redirect_uri = client['redirect_uri']
     uri = add_params_to_uri(redirect_uri, params)
     headers = [('Location', uri)]
-    return 302, '', headers
+    # return header with 302 status code
+    return '', 302, headers
+    # return 302, '', headers
     # return redirect(uri, code=302)
   
 
