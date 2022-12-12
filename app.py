@@ -126,6 +126,7 @@ def authorize():
     redirect_uri = request.args.get('redirect_uri')
     response_type = request.args.get('response_type')
     scope = request.args.get('scope')
+    state = request.args.get('state')
     request_param = {
         'client_id': client_id,
         'redirect_uri': redirect_uri,
@@ -141,13 +142,17 @@ def authorize():
     global authorization_code 
     log.debug('Generating authorization code')
     authorization_code = generate_token()
+
     params = [('code', authorization_code)]
     # get redirect_uri from client dic
+    print(f"params: {params}")
     redirect_uri = client['redirect_uri']
     uri = add_params_to_uri(redirect_uri, params)
     headers = [('Location', uri)]
-    # return 302, '', headers
-    return redirect(uri, code=302)
+    return 302, '', headers
+    # return redirect(uri, code=302)
+  
+
   
 
 @app.route("/token", methods=['POST'])
