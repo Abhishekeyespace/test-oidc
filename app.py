@@ -80,6 +80,7 @@ def generate_id_token():
         'exp': now + exp,
         'auth_time': auth_time,
     }
+    payload.update(user_info)
     key = 'secret'
     # if using RS256 algorithm, use the private key to sign the token
     return jwt.encode(payload, key, algorithm='HS256')
