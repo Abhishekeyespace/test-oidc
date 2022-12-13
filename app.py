@@ -21,6 +21,8 @@ app.logger.setLevel(logging.DEBUG)
 def authorize():
     print("authorize endpoint: Printing request headers")
     print(request.headers)
+    print("authorize endpoint: Printing request args")
+    print(request.args)
     state = request.args.get('state')
     # In production this will be retrieved from the user cookie or flask session (same as our ecs-v2/v3a pplication does)
     email = 'abhishek@eye.space'
@@ -35,6 +37,8 @@ def authorize():
 def token():
     print("token endpoint: Printing request headers")
     print(request.headers)
+    print("token endpoint: Printing request args")
+    print(request.args)
     print("token endpoint: Printing form")
     print(request.form)
     if request.form['client_secret'] != CLIENT_SECRET:
