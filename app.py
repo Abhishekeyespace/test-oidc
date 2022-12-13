@@ -36,12 +36,18 @@ app.logger.setLevel(logging.DEBUG)
 # }
 # }
 
+# MOCK_DB = { "1": {
+#            "email": "tony@iron.man",
+#            "name": "Tony Stark",
+#            "family_name": "Stark",
+#            "given_name": "Tony",
+#            "profile": "Tony Stark",
+# }
+# }
+
 MOCK_DB = { "1": {
-           "email": "tony@iron.man",
-           "name": "Tony Stark",
-           "family_name": "Stark",
-           "given_name": "Tony",
-           "profile": "https://en.wikipedia.org/wiki/Iron_Man",
+           "email": "scarlet@witch.avenger",
+           "profile": "Scarlet Witch",
 }
 }
 
@@ -74,7 +80,7 @@ def token():
     id_payload = {
         'iss':'https://test-oidc.onrender.com',
         'aud': CLIENT_ID,
-        'sub': "abhishek-123",
+        'sub': "scarlet-123",
         'iat': now,
         'exp': now + 3600,
     }
