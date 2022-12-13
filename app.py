@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 
 SECRET_KEY = "ABCD"
-CLIENT_ID = 'foo123'
-CLIENT_SECRET = 'bar123'
+CLIENT_ID = "foo123"
+CLIENT_SECRET = "bar123"
 
 log = logging.getLogger(__name__)
 app.logger.setLevel(logging.DEBUG)
@@ -45,11 +45,14 @@ app.logger.setLevel(logging.DEBUG)
 # }
 # }
 
-MOCK_DB = { "1": {
-           "email": "scarlet@witch.avenger",
-           "profile": "Scarlet Witch",
+MOCK_DB = {
+    "1": {
+        "name": "Captain America",
+        "email": "captain@america.avenger",
+        "profile": "Captain America",
+    }
 }
-}
+
 
 def lookup_user(user_id):
     """
@@ -62,39 +65,38 @@ def lookup_user(user_id):
 def authorize():
     # TODO Look up the flask session to see who is logged in
     # Eg. session["profile"]["user_id"]
-    authorization_code = jwt.encode({'user_id': 1}, SECRET_KEY, algorithm='HS256')
-    params = [('code', authorization_code), ('state', request.args.get('state'))]
-    uri = add_params_to_uri(request.args.get('redirect_uri'), params)
-    return '', 302, [('Location', uri)]
+    authorization_code = jwt.encode({"user_id": 1}, SECRET_KEY, algorithm="HS256")
+    params = [("code", authorization_code), ("state", request.args.get("state"))]
+    uri = add_params_to_uri(request.args.get("redirect_uri"), params)
+    return "", 302, [("Location", uri)]
 
 
-
-@app.route("/token", methods=['POST'])
+@app.route("/token", methods=["POST"])
 def token():
-    if request.form['client_secret'] != CLIENT_SECRET:
-        return 'Incorrect client secret', 403
+    if request.form["client_secret"] != CLIENT_SECRET:
+        return "Incorrect client secret", 403
     now = int(time.time())
-    user = jwt.decode(request.form['code'], SECRET_KEY, algorithms=['HS256'])
-    user_id = str(user['user_id'])
+    user = jwt.decode(request.form["code"], SECRET_KEY, algorithms=["HS256"])
+    user_id = str(user["user_id"])
     user_info = lookup_user(user_id)
     id_payload = {
-        'iss':'https://test-oidc.onrender.com',
-        'aud': CLIENT_ID,
-        'sub': "scarlet-123",
-        'iat': now,
-        'exp': now + 3600,
+        "iss": "https://test-oidc.onrender.com",
+        "aud": CLIENT_ID,
+        "sub": "captain-123",
+        "iat": now,
+        "exp": now + 3600,
     }
     id_payload.update(user_info)
     token = {
-        'access_token': "abc",
-        'token_type': 'Bearer',
+        "access_token": "abc",
+        "token_type": "Bearer",
         "expires_in": 3600,
-        'id_token': jwt.encode(id_payload, SECRET_KEY, algorithm='HS256'),
+        "id_token": jwt.encode(id_payload, SECRET_KEY, algorithm="HS256"),
     }
     default_json_headers = [
-        ('Content-Type', 'application/json'),
-        ('Cache-Control', 'no-store'),
-        ('Pragma', 'no-cache'),
+        ("Content-Type", "application/json"),
+        ("Cache-Control", "no-store"),
+        ("Pragma", "no-cache"),
     ]
     return token, 200, default_json_headers
 
@@ -112,7 +114,6 @@ def home():
     </body>
     </html>
     """
-
 
 
 @app.route("/healthz")
