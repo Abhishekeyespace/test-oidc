@@ -36,7 +36,7 @@ def token():
     print("token endpoint: Printing request headers")
     print(request.headers)
     print("token endpoint: Printing entire request")
-    print(json.dumps(request))
+    print(request)
     print("token endpoint: Printing form")
     print(request.form)
     if request.headers['Authorization'] != f"Bearer {CLIENT_SECRET}":
