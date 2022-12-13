@@ -41,6 +41,7 @@ user_info = {
 authorization_code = None
 
 log = logging.getLogger(__name__)
+app.logger.setLevel(logging.DEBUG)
 client = {
     'client_id': 'foo123',
     'client_secret': 'bar123',
@@ -80,7 +81,7 @@ def generate_id_token():
         'exp': now + exp,
         'auth_time': auth_time,
     }
-    payload.update(user_info)
+ 
     key = 'secret'
     # if using RS256 algorithm, use the private key to sign the token
     return jwt.encode(payload, key, algorithm='HS256')
