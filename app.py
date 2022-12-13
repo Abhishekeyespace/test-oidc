@@ -44,7 +44,7 @@ def token():
     id_payload = {
         'iss':'https://test-oidc.onrender.com',
         'aud': CLIENT_ID,
-        'sub': user['email'],
+        'sub': "1",
         'iat': now,
         'exp': now + 3600,
     }
