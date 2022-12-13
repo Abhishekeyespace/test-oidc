@@ -35,11 +35,9 @@ def authorize():
 def token():
     print("token endpoint: Printing request headers")
     print(request.headers)
-    print("token endpoint: Printing entire request")
-    print(request)
     print("token endpoint: Printing form")
     print(request.form)
-    if request.headers['Authorization'] != f"Bearer {CLIENT_SECRET}":
+    if request.form['client_secret'] != CLIENT_SECRET:
         return 'Incorrect client secret', 403
     now = int(time.time())
     user = jwt.decode(request.form['code'], SECRET_KEY, algorithms=['HS256'])
