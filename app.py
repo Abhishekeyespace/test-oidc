@@ -17,22 +17,31 @@ log = logging.getLogger(__name__)
 app.logger.setLevel(logging.DEBUG)
 
 
+# MOCK_DB = { "1": {
+#            "email": "tony@iron.man",
+#            "name": "Tony Stark",
+#            "family_name": "Stark",
+#            "given_name": "Tony",
+#            "middle_name": "Kumar",
+#            "nickname": "Iron Man",
+#            "preferred_username": "tstark", # Maybe onedesk id
+#            "profile": "https://en.wikipedia.org/wiki/Iron_Man",
+#            "picture": "https://upload.wikimedia.org/wikipedia/en/4/47/Iron_Man_%28circa_2018%29.png",
+#            "website": "https://eye.space",
+#            "gender": "",
+#            "birthdate": "",
+#            "zoneinfo": "Australia/Adelaide",
+#            "locale": "en-AU",
+#            "updated_at": 1670905096
+# }
+# }
+
 MOCK_DB = { "1": {
            "email": "tony@iron.man",
            "name": "Tony Stark",
            "family_name": "Stark",
            "given_name": "Tony",
-           "middle_name": "Kumar",
-           "nickname": "Iron Man",
-           "preferred_username": "tstark", # Maybe onedesk id
            "profile": "https://en.wikipedia.org/wiki/Iron_Man",
-           "picture": "https://upload.wikimedia.org/wikipedia/en/4/47/Iron_Man_%28circa_2018%29.png",
-           "website": "https://eye.space",
-           "gender": "",
-           "birthdate": "",
-           "zoneinfo": "Australia/Adelaide",
-           "locale": "en-AU",
-           "updated_at": 1670905096
 }
 }
 
