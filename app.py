@@ -55,15 +55,15 @@ def token():
     }
     scopes = user["scope"].split(" ") # eg ["openid", "profile", "email"]
     if "email" in scopes:
-        id_payload['email'] = "abhishek@eye.space"
+        id_payload['email'] = "tony@iron.man"
 
     if "profile" in user["scope"]:
-        id_payload["name"] = "Abhishek Das"
-        id_payload["family_name"] = "Das"
-        id_payload["given_name"] = "Abhishek"
+        id_payload["name"] = "Tony Stark"
+        id_payload["family_name"] = "Stark"
+        id_payload["given_name"] = "Tony"
         id_payload["middle_name"] = "Kumar"
-        id_payload["nickname"] = "Abhishek"
-        id_payload["preferred_username"] = "abhishek" # Maybe onedesk id
+        id_payload["nickname"] = "Iron Man"
+        id_payload["preferred_username"] = "tstark" # Maybe onedesk id
         id_payload["profile"] = "https://en.wikipedia.org/wiki/Iron_Man",
         id_payload["picture"] = "https://upload.wikimedia.org/wikipedia/en/4/47/Iron_Man_%28circa_2018%29.png"
         id_payload["website"] = "https://eye.space"
