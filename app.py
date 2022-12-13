@@ -17,18 +17,38 @@ log = logging.getLogger(__name__)
 app.logger.setLevel(logging.DEBUG)
 
 
+MOCK_DB = { "1": {
+           "email": "tony@iron.man",
+           "name": "Tony Stark",
+           "family_name": "Stark",
+           "given_name": "Tony",
+           "middle_name": "Kumar",
+           "nickname": "Iron Man",
+           "preferred_username": "tstark", # Maybe onedesk id
+           "profile": "https://en.wikipedia.org/wiki/Iron_Man",
+           "picture": "https://upload.wikimedia.org/wikipedia/en/4/47/Iron_Man_%28circa_2018%29.png",
+           "website": "https://eye.space",
+           "gender": "",
+           "birthdate": "",
+           "zoneinfo": "Australia/Adelaide",
+           "locale": "en-AU",
+           "updated_at": 1670905096
+}
+}
+
+def lookup_user(user_id):
+    """
+    TODO replace this with a call to the database
+    """
+    return MOCK_DB[user_id]
+
+
 @app.route("/authorize")
 def authorize():
-    print("authorize endpoint: Printing request headers")
-    print(request.headers)
-    print("authorize endpoint: Printing request args")
-    print(request.args)
-    state = request.args.get('state')
-    scope = request.args.get('scope')
-    # In production this will be retrieved from the user cookie or flask session (same as our ecs-v2/v3a pplication does)
-    email = 'abhishek@eye.space'
-    authorization_code = jwt.encode({'email': email, 'scope': scope}, SECRET_KEY, algorithm='HS256')
-    params = [('code', authorization_code), ('state', state)]
+    # TODO Look up the flask session to see who is logged in
+    # Eg. session["profile"]["user_id"]
+    authorization_code = jwt.encode({'user_id': 1}, SECRET_KEY, algorithm='HS256')
+    params = [('code', authorization_code), ('state', request.args.get('state'))]
     uri = add_params_to_uri(request.args.get('redirect_uri'), params)
     return '', 302, [('Location', uri)]
 
@@ -36,16 +56,12 @@ def authorize():
 
 @app.route("/token", methods=['POST'])
 def token():
-    print("token endpoint: Printing request headers")
-    print(request.headers)
-    print("token endpoint: Printing request args")
-    print(request.args)
-    print("token endpoint: Printing form")
-    print(request.form)
     if request.form['client_secret'] != CLIENT_SECRET:
         return 'Incorrect client secret', 403
     now = int(time.time())
     user = jwt.decode(request.form['code'], SECRET_KEY, algorithms=['HS256'])
+    user_id = str(user['user_id'])
+    user_info = lookup_user(user_id)
     id_payload = {
         'iss':'https://test-oidc.onrender.com',
         'aud': CLIENT_ID,
@@ -53,35 +69,13 @@ def token():
         'iat': now,
         'exp': now + 3600,
     }
-    scopes = user["scope"].split(" ") # eg ["openid", "profile", "email"]
-    if "email" in scopes:
-        id_payload['email'] = "tony@iron.man"
-
-    if "profile" in user["scope"]:
-        id_payload["name"] = "Tony Stark"
-        id_payload["family_name"] = "Stark"
-        id_payload["given_name"] = "Tony"
-        id_payload["middle_name"] = "Kumar"
-        id_payload["nickname"] = "Iron Man"
-        id_payload["preferred_username"] = "tstark" # Maybe onedesk id
-        id_payload["profile"] = "https://en.wikipedia.org/wiki/Iron_Man",
-        id_payload["picture"] = "https://upload.wikimedia.org/wikipedia/en/4/47/Iron_Man_%28circa_2018%29.png"
-        id_payload["website"] = "https://eye.space"
-        id_payload["gender"] = ""
-        id_payload["birthdate"] = ""
-        id_payload["zoneinfo"] = "Australia/Adelaide"
-        id_payload["locale"] = "en-AU"
-        id_payload["updated_at"] = now
+    id_payload.update(user_info)
     token = {
         'access_token': "abc",
         'token_type': 'Bearer',
         "expires_in": 3600,
         'id_token': jwt.encode(id_payload, SECRET_KEY, algorithm='HS256'),
     }
-    print("Printing id payload")
-    print(id_payload)
-    print("Printing token")
-    print(token)
     default_json_headers = [
         ('Content-Type', 'application/json'),
         ('Cache-Control', 'no-store'),
