@@ -50,7 +50,7 @@ def token():
         'auth_time': now,
     }
     token = {
-        'access_token': "",
+        'access_token': "abc",
         'token_type': 'Bearer',
         "expires_in": 3600,
         'id_token': jwt.encode(id_payload, SECRET_KEY, algorithm='HS256'),
