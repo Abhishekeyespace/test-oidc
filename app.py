@@ -47,9 +47,9 @@ app.logger.setLevel(logging.DEBUG)
 
 MOCK_DB = {
     "1": {
-        "name": "Captain America",
-        "email": "captain@america.avenger",
-        "profile": "Captain America",
+        "name": "Iron Man",
+        "email": "iron_man@founder.avenger",
+        "profile": "https://test-oidc.onrender.com/static/ironman.jpeg",
     }
 }
 
