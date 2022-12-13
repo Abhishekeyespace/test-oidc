@@ -82,10 +82,11 @@ def generate_id_token():
         'exp': now + exp,
         'auth_time': auth_time,
     }
- 
-    key = 'secret'
-    # if using RS256 algorithm, use the private key to sign the token
-    return jwt.encode(payload, key, algorithm='HS256')
+    private_key = open('jwt-key').read()
+    return jwt.encode(payload, private_key, algorithm='RS256')
+    # key = 'secret'
+    # # if using RS256 algorithm, use the private key to sign the token
+    # return jwt.encode(payload, key, algorithm='HS256')
 
 
 def validate_authorization_request(request):
