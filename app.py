@@ -165,8 +165,8 @@ def authorize():
 def token():
     log.debug('Generating token')
     # verify the client
-    if not authenticate_token_endpoint_client():
-        return 'Invalid client', 401
+    # if not authenticate_token_endpoint_client():
+    #     return 'Invalid client', 401
     
     log.debug('Verifying grant type')
     # verify the grant_type is authorization_code
