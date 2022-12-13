@@ -42,6 +42,7 @@ authorization_code = None
 
 log = logging.getLogger(__name__)
 app.logger.setLevel(logging.DEBUG)
+
 client = {
     'client_id': 'foo123',
     'client_secret': 'bar123',
@@ -166,12 +167,16 @@ def token():
     # verify the client
     if not authenticate_token_endpoint_client():
         return 'Invalid client', 401
+    
+    log.debug('Verifying grant type')
     # verify the grant_type is authorization_code
     if request.form['grant_type'] != 'authorization_code':
         return 'Invalid grant type', 400
     # verify the authorization code in the request is the same as the one generated
+    log.debug('Verifying authorization code')
     if request.form['code'] != authorization_code:
         return 'Invalid authorization code', 400
+    log.debug('Generating token')
     # generate the id_token
     id_token = generate_id_token()
 
