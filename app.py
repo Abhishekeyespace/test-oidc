@@ -1,6 +1,7 @@
 from utils import add_params_to_uri
 import time
 import string
+import json
 import logging
 from jose import jwt
 from flask import Flask, request
@@ -34,6 +35,10 @@ def authorize():
 def token():
     print("token endpoint: Printing request headers")
     print(request.headers)
+    print("token endpoint: Printing entire request")
+    print(json.dumps(request))
+    print("token endpoint: Printing form")
+    print(request.form)
     if request.headers['Authorization'] != f"Bearer {CLIENT_SECRET}":
         return 'Incorrect client secret', 403
     now = int(time.time())
