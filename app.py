@@ -77,7 +77,7 @@ def generate_id_token():
     payload = {
         'iss':'https://eye.space',
         'aud': client['client_id'],
-        'sub': user_info['id'],
+        'sub': user_info['email'],
         'iat': now,
         'exp': now + exp,
         'auth_time': auth_time,
