@@ -95,7 +95,17 @@ def token():
 
 @app.route("/")
 def home():
-    return "Hello, Flask!"
+    return """
+    <html>
+    <head>
+    <title>Test OIDC</title>
+    </head>
+    <body>
+    <h1>Test OIDC</h1>
+    <a href="https://test-oidc.onrender.com/authorize?client_id=foo123&response_type=code&scope=openid%20email%20profile&redirect_uri=https://app.onedesk.com/sso/openid&state=main_portal.3da2c61b-b810-491e-84d9-8e5a4c77a865">Login</a>
+    </body>
+    </html>
+    """
 
 
 
