@@ -48,7 +48,10 @@ def token():
     id_payload = {
         'iss':'https://test-oidc.onrender.com',
         'aud': CLIENT_ID,
-        'sub': "1",
+        'sub': "abhishek-123",
+        'email': "abhishek@eye.space",
+        'profile': "https://eye.space/staff/abhishek",
+        'name': "Abhishek Das",
         'iat': now,
         'exp': now + 3600,
     }
