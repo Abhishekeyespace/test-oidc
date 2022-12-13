@@ -42,12 +42,11 @@ def token():
     now = int(time.time())
     user = jwt.decode(request.form['code'], SECRET_KEY, algorithms=['HS256'])
     id_payload = {
-        'iss':'https://eye.space',
+        'iss':'https://test-oidc.onrender.com',
         'aud': CLIENT_ID,
         'sub': user['email'],
         'iat': now,
         'exp': now + 3600,
-        'auth_time': now,
     }
     token = {
         'access_token': "abc",
@@ -55,6 +54,10 @@ def token():
         "expires_in": 3600,
         'id_token': jwt.encode(id_payload, SECRET_KEY, algorithm='HS256'),
     }
+    print("Printing id payload")
+    print(id_payload)
+    print("Printing token")
+    print(token)
     default_json_headers = [
         ('Content-Type', 'application/json'),
         ('Cache-Control', 'no-store'),
