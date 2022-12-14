@@ -1,9 +1,8 @@
-<form action="{{ url_for('authorize') }}" method="post">
-    <div>
-        <p>Do you want to grant access to {{ client.name }}?</p>
-    </div>
-    <div>
-        <input type="submit" value="Yes">
-        <input type="submit" name="cancel" value="No">
-    </div>  
+<form action="" method="post">
+    <label>
+        <input type="checkbox" name="confirm">
+        <span>Consent?</span>
+    </label>
+    
+    <input type="submit" value="Submit">
 </form>
