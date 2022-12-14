@@ -4,7 +4,7 @@ import string
 import json
 import logging
 from jose import jwt
-from flask import Flask, request
+from flask import Flask, redirect, render_template, request, url_for
 
 app = Flask(__name__)
 
@@ -45,12 +45,20 @@ app.logger.setLevel(logging.DEBUG)
 # }
 # }
 
+# https://openid.net/specs/openid-connect-basic-1_0.html#Scopes
+# MOCK_DB = {
+#     "1": {
+#         "name": "Iron Man",
+#         "email": "iron_man@founder.avenger",
+#         "profile": "https://test-oidc.onrender.com/static/ironman.jpeg",
+#     }
+# }
+
+name = None
+email = None
+profile = None
 MOCK_DB = {
-    "1": {
-        "name": "Iron Man",
-        "email": "iron_man@founder.avenger",
-        "profile": "https://test-oidc.onrender.com/static/ironman.jpeg",
-    }
+    "1": { "name": name, "email": email, "profile": profile }
 }
 
 
@@ -59,6 +67,52 @@ def lookup_user(user_id):
     TODO replace this with a call to the database
     """
     return MOCK_DB[user_id]
+
+
+
+# @app.route('/login/', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'GET':
+#         return render_template('login.html',)
+#     else:
+#         global name
+#         global email
+#         global profile
+#         name = request.form['name']
+#         email = request.form['email']
+#         profile = request.form['profile']
+#         MOCK_DB["1"] = { "name": name, "email": email, "profile": profile }
+#         return redirect(url_for('home'),name=name,email=email,profile=profile)
+
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    global name
+    global email
+    global profile
+    global MOCK_DB
+    # login page for the user to enter the details and login to the app
+    # then get the details and store it in MOCK_DB dict
+    # then redirect to home page
+    if request.method == 'GET':
+        return render_template('login.html',)
+    else:
+        
+        name = request.form['name']
+        email = request.form['email']
+        profile = request.form['profile']
+        MOCK_DB["1"] = { "name": name, "email": email, "profile": profile }
+        print(MOCK_DB)
+        return render_template('home.html',name=name,email=email,profile=profile)
+
+
+@app.route("/logout")
+def logout():
+    # remove name ,email and profile from MOCK_DB dict and redirect to home page
+    MOCK_DB["1"] = { "name": None, "email": None, "profile": None }
+    return redirect(url_for('home'))
+
+
 
 
 @app.route("/authorize")
@@ -103,17 +157,22 @@ def token():
 
 @app.route("/")
 def home():
-    return """
-    <html>
-    <head>
-    <title>Test OIDC</title>
-    </head>
-    <body>
-    <h1>Test OIDC</h1>
-    <a href="https://test-oidc.onrender.com/authorize?client_id=foo123&response_type=code&scope=openid%20email%20profile&redirect_uri=https://app.onedesk.com/sso/openid&state=main_portal.3da2c61b-b810-491e-84d9-8e5a4c77a865">Login</a>
-    </body>
-    </html>
-    """
+    return render_template('home.html')
+    # Login button for the user to login to the app
+    # return """
+    # <html>
+    # <head>
+    # <title>Test OIDC</title>
+    # </head>
+    # <body>
+    # <h1>Test OIDC</h1>
+    # <a href="https://test-oidc.onrender.com/authorize?client_id=foo123&response_type=code&scope=openid%20email%20profile&redirect_uri=https://app.onedesk.com/sso/openid&state=main_portal.3da2c61b-b810-491e-84d9-8e5a4c77a865">Login</a>
+    # </body>
+    # </html>
+    # """
+
+
+
 
 
 @app.route("/healthz")
