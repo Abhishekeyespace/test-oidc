@@ -72,6 +72,9 @@ def logout():
 def authorize():
     # TODO Look up the flask session to see who is logged in
     # Eg. session["profile"]["user_id"]
+    # first render the authorize page to get the user's consent
+    if request.method == 'GET':
+        return render_template('authorize.html')
     authorization_code = jwt.encode({"user_id": 1}, SECRET_KEY, algorithm="HS256")
     params = [("code", authorization_code), ("state", request.args.get("state"))]
     uri = add_params_to_uri(request.args.get("redirect_uri"), params)
