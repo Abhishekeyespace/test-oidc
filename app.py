@@ -30,7 +30,7 @@ name = None
 email = None
 profile = None
 MOCK_DB = {
-    "1": { "name": name, "email": email, "profile": profile }
+    "1": { "name": name, "email": email}
 }
 
 
@@ -55,9 +55,9 @@ def login():
         name = request.form['name']
         email = request.form['email']
         profile = request.form['profile']
-        MOCK_DB["1"] = { "name": name, "email": email, "profile": profile }
+        MOCK_DB["1"] = { "name": name, "email": email }
         print(MOCK_DB)
-        return render_template('home.html',name=name,email=email,profile=profile)
+        return render_template('home.html',name=name,email=email)
 
 
 @app.route("/logout")
