@@ -1,11 +1,10 @@
 from utils import add_params_to_uri
 import time
-import string
-import json
 import logging
 from jose import jwt
 from flask import Flask, redirect, render_template, request, session, url_for
 import uuid
+
 app = Flask(__name__)
 
 app.secret_key = 'BAD_SECRET_KEY'
@@ -16,7 +15,6 @@ CLIENT_SECRET = "bar123"
 log = logging.getLogger(__name__)
 app.logger.setLevel(logging.DEBUG)
 
-
 MOCK_DB = {}
 
 def lookup_user(user_id):
@@ -24,7 +22,6 @@ def lookup_user(user_id):
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    
     if request.method == 'GET':
         return render_template('login.html',)
     else:
@@ -36,23 +33,18 @@ def login():
         MOCK_DB[user_id] = {'family_name': session['family_name'], 'given_name': session['given_name'], 'email': session['email']}
         return render_template('home.html',email=session['email'])
 
-
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for("home"))
 
-
 @app.route("/authorize")
 def authorize():
-    # TODO Look up the flask session to see who is logged in
-    # get the user_id from the session
     user_id = session['user_id']
     authorization_code = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
     params = [("code", authorization_code), ("state", request.args.get("state"))]
     uri = add_params_to_uri(request.args.get("redirect_uri"), params)
     return "", 302, [("Location", uri)]
-
 
 @app.route("/token", methods=["POST"])
 def token():
@@ -84,16 +76,13 @@ def token():
     ]
     return token, 200, default_json_headers
 
-
 @app.route("/")
 def home():
     return render_template('home.html')
 
-
 @app.route("/healthz")
 def healthz():
     return "OK"
-
 
 if __name__ == "__main__":
     app.run(host="localhost", port=8080, debug=True)
