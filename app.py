@@ -5,7 +5,7 @@ import json
 import logging
 from jose import jwt
 from flask import Flask, redirect, render_template, request, session, url_for
-
+import uuid
 app = Flask(__name__)
 
 app.secret_key = 'BAD_SECRET_KEY'
@@ -17,43 +17,23 @@ log = logging.getLogger(__name__)
 app.logger.setLevel(logging.DEBUG)
 
 
-# https://openid.net/specs/openid-connect-basic-1_0.html#Scopes
-# MOCK_DB = {
-#     "1": {
-#         "name": "Iron Man",
-#         "email": "iron_man@founder.avenger",
-#         "profile": "https://test-oidc.onrender.com/static/ironman.jpeg",
-#     }
-# }
-
-# name = None
-# email = None
-# profile = None
-# MOCK_DB = {
-#     "1": { "name": name, "email": email}
-# }
-
 MOCK_DB = {}
-
 
 def lookup_user(user_id):
     return MOCK_DB[user_id]
-    
-   
-
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
+    
     if request.method == 'GET':
         return render_template('login.html',)
     else:
-        # request family_name, given_name, email from the form and store it in flask session
         session['family_name'] = request.form['family_name']
         session['given_name'] = request.form['given_name']
         session['email'] = request.form['email']
-        # save the family_name, given_name, email in MOCK_DB with user_id as key
-        MOCK_DB['1'] = {'family_name': session['family_name'], 'given_name': session['given_name'], 'email': session['email']}
-  
+        user_id =uuid.uuid4()
+        session['user_id'] = user_id
+        MOCK_DB[user_id] = {'family_name': session['family_name'], 'given_name': session['given_name'], 'email': session['email']}
         return render_template('home.html',email=session['email'])
 
 
@@ -63,13 +43,12 @@ def logout():
     return redirect(url_for("home"))
 
 
-
-
 @app.route("/authorize")
 def authorize():
     # TODO Look up the flask session to see who is logged in
-    # Eg. session["profile"]["user_id"]
-    authorization_code = jwt.encode({"user_id": 1}, SECRET_KEY, algorithm="HS256")
+    # get the user_id from the session
+    user_id = session['user_id']
+    authorization_code = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
     params = [("code", authorization_code), ("state", request.args.get("state"))]
     uri = add_params_to_uri(request.args.get("redirect_uri"), params)
     return "", 302, [("Location", uri)]
