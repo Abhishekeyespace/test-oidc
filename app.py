@@ -40,6 +40,10 @@ def lookup_user(user_id):
     MOCK_DB[user_id] ={"family_name": session['family_name'],"given_name": session['given_name'],"email": session['email']}
     return MOCK_DB[user_id]
 
+@app.route('/get_user_info')
+def get_user_info():
+    family_name = session['family_name']
+    return family_name
 
 
 @app.route('/login/', methods=['GET', 'POST'])
