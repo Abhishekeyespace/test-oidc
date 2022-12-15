@@ -33,7 +33,7 @@ app.logger.setLevel(logging.DEBUG)
 #     "1": { "name": name, "email": email}
 # }
 
-MOCK_DB ={}
+MOCK_DB = {}
 def lookup_user(user_id):
     """
     TODO replace this with a call to the database
@@ -52,20 +52,20 @@ def login():
         return render_template('login.html',)
     else:
         
-        email = request.form['email']
+        name = request.form['name']
         # profile = request.form['profile']
         # MOCK_DB["1"] = { "name": name, "email": email }
         # print(MOCK_DB)
         # create a MOCK_DB entry for the user
        
-        MOCK_DB["1"] = {"email": email }
+        MOCK_DB["1"] = {"name": name }
         print(MOCK_DB)
-        return render_template('home.html',email=email)
+        return render_template('home.html',name=name)
 
 
 @app.route("/logout")
 def logout():
-    MOCK_DB["1"] = { "email": None}
+    MOCK_DB["1"] = { "name": None}
     return redirect(url_for('home'))
 
 
