@@ -58,7 +58,7 @@ def login():
         # print(MOCK_DB)
         # create a MOCK_DB entry for the user
        
-        MOCK_DB["1"] = {"email": email,"locale":'zh'}
+        MOCK_DB["1"] = {"email": email,"family_name":"Das"}
         print(MOCK_DB)
         return render_template('home.html',email=email)
 
@@ -89,6 +89,7 @@ def token():
     user = jwt.decode(request.form["code"], SECRET_KEY, algorithms=["HS256"])
     user_id = str(user["user_id"])
     user_info = lookup_user(user_id)
+    print(user_info)
     id_payload = {
         "iss": "https://test-oidc.onrender.com",
         "aud": CLIENT_ID,
