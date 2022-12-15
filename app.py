@@ -33,17 +33,13 @@ app.logger.setLevel(logging.DEBUG)
 #     "1": { "name": name, "email": email}
 # }
 
-def lookup_user(user_id):
-    
-    # add a MOCK_DB entry for the user from session data
-    MOCK_DB = {}
-    MOCK_DB[user_id] ={"family_name": session['family_name'],"given_name": session['given_name'],"email": session['email']}
-    return MOCK_DB[user_id]
+MOCK_DB = {}
 
-@app.route('/get_user_info')
-def get_user_info():
-    family_name = session['family_name']
-    return family_name
+
+def lookup_user(user_id):
+    return MOCK_DB[user_id]
+    
+   
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -55,14 +51,9 @@ def login():
         session['family_name'] = request.form['family_name']
         session['given_name'] = request.form['given_name']
         session['email'] = request.form['email']
-        # email = request.form['email']
-        # profile = request.form['profile']
-        # MOCK_DB["1"] = { "name": name, "email": email }
-        # print(MOCK_DB)
-        # create a MOCK_DB entry for the user
-       
-        # MOCK_DB["1"] = {"email": email,"name":"Randome Name","locale":"zh-CN"}
-        # print(MOCK_DB)
+        # save the family_name, given_name, email in MOCK_DB with user_id as key
+        MOCK_DB['1'] = {'family_name': session['family_name'], 'given_name': session['given_name'], 'email': session['email']}
+  
         return render_template('home.html',email=session['email'])
 
 
