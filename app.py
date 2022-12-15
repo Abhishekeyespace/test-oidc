@@ -52,20 +52,20 @@ def login():
         return render_template('login.html',)
     else:
         
-        name = request.form['name']
+        email = request.form['email']
         # profile = request.form['profile']
         # MOCK_DB["1"] = { "name": name, "email": email }
         # print(MOCK_DB)
         # create a MOCK_DB entry for the user
        
-        MOCK_DB["1"] = {"name": name }
+        MOCK_DB["1"] = {"email": email,"locale":"zh-cn" }
         print(MOCK_DB)
-        return render_template('home.html',name=name)
+        return render_template('home.html',email=email)
 
 
 @app.route("/logout")
 def logout():
-    MOCK_DB["1"] = { "name": None}
+    MOCK_DB["1"] = {"name": None}
     return redirect(url_for('home'))
 
 
