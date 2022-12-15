@@ -31,7 +31,7 @@ def login():
         session['family_name'] = request.form['family_name']
         session['given_name'] = request.form['given_name']
         session['email'] = request.form['email']
-        user_id =uuid.uuid4()
+        user_id = str(uuid.uuid4())
         session['user_id'] = user_id
         MOCK_DB[user_id] = {'family_name': session['family_name'], 'given_name': session['given_name'], 'email': session['email']}
         return render_template('home.html',email=session['email'])
