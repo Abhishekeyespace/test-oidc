@@ -1,21 +1,21 @@
 
-{% if user %}
+{% if email %}
   <style>pre{white-space:wrap}</style>
-    <div>Logged in as <strong>{{user}} {{profile}} {{email}}</strong></div>
+    <div>Logged in as <strong>{{email}}</strong></div>
 {% else %}
     <form action="{{ url_for('login') }}" method="post">
-    <!-- <div>
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name">
-    </div> -->
+    <div>
+        <label for="given_name">First Name</label>
+        <input type="text" name="given_name" id="given_name">
+    </div>
+    <div>
+        <label for="family_name">Last Name</label>
+        <input type="text" name="family_name" id="family_name">
+    </div>
     <div>
         <label for="email">Email</label>
         <input type="text" name="email" id="email">
     </div>
-    <!-- <div>
-        <label for="profile">Profile</label>
-        <input type="text" name="profile" id="profile">
-    </div> -->
     <div>
         <input type="submit" value="Login">
     </div>

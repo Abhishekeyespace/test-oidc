@@ -4,7 +4,7 @@ import string
 import json
 import logging
 from jose import jwt
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, session, url_for
 
 app = Flask(__name__)
 
@@ -33,40 +33,39 @@ app.logger.setLevel(logging.DEBUG)
 #     "1": { "name": name, "email": email}
 # }
 
-MOCK_DB = {}
 def lookup_user(user_id):
-    """
-    TODO replace this with a call to the database
-    """
+    
+    # add a MOCK_DB entry for the user from session data
+    MOCK_DB = {}
+    MOCK_DB[user_id] ={"family_name": session['family_name'],"given_name": session['given_name'],"email": session['email']}
     return MOCK_DB[user_id]
 
 
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    # global name
-    # global email
-    # global profile
-    # global MOCK_DB
     if request.method == 'GET':
         return render_template('login.html',)
     else:
-        
-        email = request.form['email']
+        # request family_name, given_name, email from the form and store it in flask session
+        session['family_name'] = request.form['family_name']
+        session['given_name'] = request.form['given_name']
+        session['email'] = request.form['email']
+        # email = request.form['email']
         # profile = request.form['profile']
         # MOCK_DB["1"] = { "name": name, "email": email }
         # print(MOCK_DB)
         # create a MOCK_DB entry for the user
        
-        MOCK_DB["1"] = {"email": email,"name":"Randome Name","locale":"zh-CN"}
-        print(MOCK_DB)
-        return render_template('home.html',email=email)
+        # MOCK_DB["1"] = {"email": email,"name":"Randome Name","locale":"zh-CN"}
+        # print(MOCK_DB)
+        return render_template('home.html',email=session['email'])
 
 
 @app.route("/logout")
 def logout():
-    MOCK_DB["1"] = {"name": None}
-    return redirect(url_for('home'))
+    session.clear()
+    return redirect(url_for("home"))
 
 
 
@@ -93,6 +92,7 @@ def token():
     id_payload = {
         "iss": "https://test-oidc.onrender.com",
         "aud": CLIENT_ID,
+        "sub": 'eyespace-123',
         "iat": now,
         "exp": now + 3600,
     }
