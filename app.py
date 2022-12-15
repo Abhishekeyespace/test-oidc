@@ -61,12 +61,12 @@ def login():
        
         MOCK_DB["1"] = {"email": email }
         print(MOCK_DB)
-        return render_template('home.html',name=name,email=email)
+        return render_template('home.html',email=email)
 
 
 @app.route("/logout")
 def logout():
-    MOCK_DB["1"] = { "name": None, "email": None, "profile": None }
+    MOCK_DB["1"] = { "email": None}
     return redirect(url_for('home'))
 
 
