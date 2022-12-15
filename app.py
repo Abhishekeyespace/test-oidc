@@ -8,7 +8,7 @@ from flask import Flask, redirect, render_template, request, session, url_for
 
 app = Flask(__name__)
 
-
+app.secret_key = 'BAD_SECRET_KEY'
 SECRET_KEY = "ABCD"
 CLIENT_ID = "foo123"
 CLIENT_SECRET = "bar123"
