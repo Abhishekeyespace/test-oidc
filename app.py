@@ -26,14 +26,14 @@ app.logger.setLevel(logging.DEBUG)
 #     }
 # }
 
-name = None
-email = None
-profile = None
-MOCK_DB = {
-    "1": { "name": name, "email": email}
-}
+# name = None
+# email = None
+# profile = None
+# MOCK_DB = {
+#     "1": { "name": name, "email": email}
+# }
 
-
+MOCK_DB ={}
 def lookup_user(user_id):
     """
     TODO replace this with a call to the database
@@ -44,18 +44,22 @@ def lookup_user(user_id):
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    global name
-    global email
-    global profile
-    global MOCK_DB
+    # global name
+    # global email
+    # global profile
+    # global MOCK_DB
     if request.method == 'GET':
         return render_template('login.html',)
     else:
         
         name = request.form['name']
         email = request.form['email']
-        profile = request.form['profile']
-        MOCK_DB["1"] = { "name": name, "email": email }
+        # profile = request.form['profile']
+        # MOCK_DB["1"] = { "name": name, "email": email }
+        # print(MOCK_DB)
+        # create a MOCK_DB entry for the user
+       
+        MOCK_DB["1"] = {"email": email }
         print(MOCK_DB)
         return render_template('home.html',name=name,email=email)
 
@@ -111,8 +115,6 @@ def token():
 @app.route("/")
 def home():
     return render_template('home.html')
-
-
 
 
 @app.route("/healthz")
