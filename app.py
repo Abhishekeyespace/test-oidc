@@ -52,7 +52,6 @@ def login():
         return render_template('login.html',)
     else:
         
-        name = request.form['name']
         email = request.form['email']
         # profile = request.form['profile']
         # MOCK_DB["1"] = { "name": name, "email": email }
