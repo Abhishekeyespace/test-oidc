@@ -58,7 +58,7 @@ def login():
         # print(MOCK_DB)
         # create a MOCK_DB entry for the user
        
-        MOCK_DB["1"] = {"email": email,"family_name":"Das"}
+        MOCK_DB["1"] = {"email": email,"family_name":"Kyle","locale":"es-SV"}
         print(MOCK_DB)
         return render_template('home.html',email=email)
 
