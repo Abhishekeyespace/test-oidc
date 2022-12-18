@@ -58,14 +58,15 @@ def logout():
 @app.route("/authorize",methods=['GET', 'POST'])
 def authorize():
     user_id = session['user_id']
+    # if there is no user_id in the session
+    if not user_id:
+        return redirect(url_for("login"))
     print(f"User ID in authorize: {user_id}")
     user_info = lookup_user(user_id)
     email = user_info['email']
     if request.method == "GET":
         return render_template("authorize.html", email=email)
-    # if there is no user_id in the session
-    if not user_id:
-        return redirect(url_for("login"))
+   
    
     authorization_code = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
     params = [("code", authorization_code), ("state", request.args.get("state"))]
