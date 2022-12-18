@@ -44,7 +44,12 @@ def login():
         if user_id not in MOCK_DB:
             MOCK_DB[user_id] = {'family_name': family_name, 'given_name': given_name, 'email': email}
         session['user_id'] = user_id
-        return render_template('home.html',email=email)
+        return render_template('home.html')
+    # get email from user_id
+    user_id = session['user_id']
+    user_info = lookup_user(user_id)
+    email = user_info['email']
+    return render_template('home.html',email=email)
 
 
 
