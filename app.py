@@ -18,38 +18,33 @@ app.logger.setLevel(logging.DEBUG)
 MOCK_DB = {}
 
 def lookup_user(user_id):
-    return MOCK_DB[user_id]
+    # check if user_id is in the session
+    if user_id in session:
+        return MOCK_DB[user_id]
+    else:
+        return None
 
-# @app.route('/login/', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html',)
+    else:
+      
+        email = request.form['email']
+        user_id = str(uuid.uuid4())
+        session['user_id'] = user_id
+        MOCK_DB[user_id] = {'email': email}
+        return render_template('home.html',email=email)
+
+# @app.route("/login", methods=["GET", "POST"])
 # def login():
-#     if request.method == 'GET':
-#         return render_template('login.html',)
-#     else:
-#         family_name = request.form['family_name']
-#         given_name = request.form['given_name']
+#     if request.method == 'POST':
 #         email = request.form['email']
 #         user_id = str(uuid.uuid4())
 #         session['user_id'] = user_id
-#         MOCK_DB[user_id] = {'family_name': family_name, 'given_name': given_name, 'email': email}
-#         return render_template('home.html',email=email)
+#         MOCK_DB[user_id] = {'email': email}
+#         return redirect(url_for('authorize'))
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == 'POST':
-        family_name = request.form['family_name']
-        given_name = request.form['given_name']
-        email = request.form['email']
-        user_id = str(uuid.uuid4())
-        # check if user does not exist, then create new user
-        if user_id not in MOCK_DB:
-            MOCK_DB[user_id] = {'family_name': family_name, 'given_name': given_name, 'email': email}
-        session['user_id'] = user_id
-        return render_template('home.html')
-    # get email from user_id
-    user_id = session['user_id']
-    user_info = lookup_user(user_id)
-    email = user_info['email']
-    return render_template('home.html',email=email)
 
 
 
@@ -61,6 +56,17 @@ def logout():
 @app.route("/authorize")
 def authorize():
     user_id = session['user_id']
+    user_info = lookup_user(user_id)
+    email = user_info['email']
+    if request.method == "GET":
+        return render_template("authorize.html", email=email)
+    if not user_id and 'email' in request.form:
+        email = request.form['email']
+        user_id = str(uuid.uuid4())
+        session['user_id'] = user_id
+        MOCK_DB[user_id] = {'email': email}
+    if request.form['confirm']:
+        user_id = session['user_id']
     authorization_code = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
     params = [("code", authorization_code), ("state", request.args.get("state"))]
     uri = add_params_to_uri(request.args.get("redirect_uri"), params)

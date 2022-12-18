@@ -4,14 +4,14 @@
     <div>Logged in as <strong>{{email}}</strong></div>
 {% else %}
     <form action="{{ url_for('login') }}" method="post">
-    <div>
+    <!-- <div>
         <label for="given_name">First Name</label>
         <input type="text" name="given_name" id="given_name">
     </div>
     <div>
         <label for="family_name">Last Name</label>
         <input type="text" name="family_name" id="family_name">
-    </div>
+    </div> -->
     <div>
         <label for="email">Email</label>
         <input type="text" name="email" id="email">
