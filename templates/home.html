@@ -1,4 +1,6 @@
 {% if email %}
+<style>pre{white-space:wrap}</style>
+    <div>Logged in as <strong>{{email}}</strong></div>
 <a href="https://test-oidc.onrender.com/authorize?client_id=foo123&response_type=code&scope=openid%20email%20profile&redirect_uri=https://app.onedesk.com/sso/openid&state=customer_portal449581.0f05e363-f934-403e-8936-bd79a2f5ecd8">Authorize</a>
 {% else %}
 <div>
