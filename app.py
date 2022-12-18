@@ -63,13 +63,10 @@ def authorize():
     email = user_info['email']
     if request.method == "GET":
         return render_template("authorize.html", email=email)
-    if not user_id and 'email' in request.form:
-        email = request.form['email']
-        user_id = str(uuid.uuid4())
-        session['user_id'] = user_id
-        MOCK_DB[user_id] = {'email': email}
-    if request.form['confirm']:
-        user_id = session['user_id']
+    # if there is no user_id in the session
+    if not user_id:
+        return redirect(url_for("login"))
+   
     authorization_code = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
     params = [("code", authorization_code), ("state", request.args.get("state"))]
     uri = add_params_to_uri(request.args.get("redirect_uri"), params)
