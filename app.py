@@ -18,8 +18,10 @@ app.logger.setLevel(logging.DEBUG)
 MOCK_DB = {}
 
 def lookup_user(user_id):
-    # check if user_id is in the session
-    if user_id in session:
+   # check if user_id is in MOCK_DB
+    # if not, return None
+    # if so, return the user info
+    if user_id in MOCK_DB:
         return MOCK_DB[user_id]
     else:
         return None
@@ -56,6 +58,7 @@ def logout():
 @app.route("/authorize")
 def authorize():
     user_id = session['user_id']
+    print(f"User ID in authorize: {user_id}")
     user_info = lookup_user(user_id)
     email = user_info['email']
     if request.method == "GET":
