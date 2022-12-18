@@ -55,7 +55,7 @@ def logout():
     session.clear()
     return redirect(url_for("home"))
 
-@app.route("/authorize")
+@app.route("/authorize",methods=['GET', 'POST'])
 def authorize():
     user_id = session['user_id']
     print(f"User ID in authorize: {user_id}")
