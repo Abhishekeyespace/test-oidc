@@ -18,9 +18,6 @@ app.logger.setLevel(logging.DEBUG)
 MOCK_DB = {}
 
 def lookup_user(user_id):
-   # check if user_id is in MOCK_DB
-    # if not, return None
-    # if so, return the user info
     if user_id in MOCK_DB:
         return MOCK_DB[user_id]
     else:
@@ -31,24 +28,11 @@ def login():
     if request.method == 'GET':
         return render_template('login.html',)
     else:
-      
         email = request.form['email']
         user_id = str(uuid.uuid4())
         session['user_id'] = user_id
         MOCK_DB[user_id] = {'email': email}
         return render_template('home.html',email=email)
-
-# @app.route("/login", methods=["GET", "POST"])
-# def login():
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         user_id = str(uuid.uuid4())
-#         session['user_id'] = user_id
-#         MOCK_DB[user_id] = {'email': email}
-#         return redirect(url_for('authorize'))
-
-
-
 
 @app.route("/logout")
 def logout():
@@ -62,10 +46,8 @@ def authorize():
     except KeyError:
         return redirect(url_for('login'))
     print(f"User ID in authorize: {user_id}")
-    user_info = lookup_user(user_id)
-    email = user_info['email']
     if request.method == "GET":
-        return render_template("authorize.html", email=email)
+        return render_template("authorize.html")
    
    
     authorization_code = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
