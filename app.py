@@ -25,13 +25,13 @@ def login():
     if request.method == 'GET':
         return render_template('login.html',)
     else:
-        session['family_name'] = request.form['family_name']
-        session['given_name'] = request.form['given_name']
-        session['email'] = request.form['email']
+        family_name = request.form['family_name']
+        given_name = request.form['given_name']
+        email = request.form['email']
         user_id = str(uuid.uuid4())
         session['user_id'] = user_id
-        MOCK_DB[user_id] = {'family_name': session['family_name'], 'given_name': session['given_name'], 'email': session['email']}
-        return render_template('home.html',email=session['email'])
+        MOCK_DB[user_id] = {'family_name': family_name, 'given_name': given_name, 'email': email}
+        return render_template('home.html',email=email)
 
 @app.route("/logout")
 def logout():
