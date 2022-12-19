@@ -31,7 +31,7 @@ def login():
         email = request.form['email']
         user_id = str(uuid.uuid4())
         session['user_id'] = user_id
-        MOCK_DB[user_id] = {'email': email}
+        MOCK_DB[user_id] = {'email': email,'organization':'EyeSpace','name':'Eyespace User'}
         return render_template('home.html',email=email)
 
 @app.route("/logout")
