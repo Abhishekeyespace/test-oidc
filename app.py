@@ -28,10 +28,12 @@ def login():
     if request.method == 'GET':
         return render_template('login.html',)
     else:
+        given_name = request.form['given_name']
+        family_name = request.form['family_name']
         email = request.form['email']
         user_id = str(uuid.uuid4())
         session['user_id'] = user_id
-        MOCK_DB[user_id] = {'email': email,'organization':'EyeSpace','name':'Eyespace User'}
+        MOCK_DB[user_id] = {'email': email, 'given_name': given_name, 'family_name': family_name}
         return render_template('home.html',email=email)
 
 @app.route("/logout")
