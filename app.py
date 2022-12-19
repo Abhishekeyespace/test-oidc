@@ -54,7 +54,8 @@ def authorize():
    
     authorization_code = jwt.encode({"user_id": user_id}, SECRET_KEY, algorithm="HS256")
     params = [("code", authorization_code), ("state", request.args.get("state"))]
-    uri = add_params_to_uri(request.args.get("redirect_uri"), params)
+    # uri = add_params_to_uri(request.args.get("redirect_uri"), params)
+    uri = "https://test-oidc.onrender.com/login/"
     return "", 302, [("Location", uri)]
 
 @app.route("/token", methods=["POST"])
